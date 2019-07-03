@@ -1,15 +1,12 @@
 package main
 
-import "fmt"
-
 func main() {
 
-	cards := []string{"Ace of Diamonds", newCard()}
+	cards := deck{"Ace of Diamonds", newCard()}
 	cards = append(cards, "Six of spades")
 
-	for i, card := range cards {
-		fmt.Println(i, card)
-	}
+	// because "cards" is of type "deck", it gets access to the "print" method
+	cards.print()
 }
 
 func newCard() string {
