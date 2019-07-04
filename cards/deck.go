@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"strings"
+)
 
 // create a new type of 'deck' which is a slice of strings
 // below, we are creating a type deck which is like a slice of strings
@@ -36,7 +40,21 @@ func (d deck) print() {
 // (d deck) => d is a variable which represents the actual copy of the deck we're working with.
 // deck is a reference to the type we want to attach the print function to.
 // In main.go, cards === d
+// (deck deck) represents the arguments for a function
 
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
+}
+
+// convert to string
+func (d deck) toString() string {
+	// convert deck to string and join a slice of strings to form a single string
+	return strings.Join([]string(d), ",")
+
+}
+
+func (d deck) saveToFile(filename string) error {
+	// writefile saves data as byte so we change our string to bytes
+	// ? the last parameter is the permissions. 0666 means anyone can read & write
+	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
 }
