@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -57,4 +58,18 @@ func (d deck) saveToFile(filename string) error {
 	// writefile saves data as byte so we change our string to bytes
 	// ? the last parameter is the permissions. 0666 means anyone can read & write
 	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
+}
+
+func newDeckFromFile(filename string) deck {
+	bs, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+
+	// convert byte size to string and separate strings
+	s := strings.Split(string(bs), ",")
+
+	// convert string slice into deck type
+	return deck(s)
 }
