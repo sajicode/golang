@@ -43,7 +43,7 @@ func (d deck) print() {
 // (d deck) => d is a variable which represents the actual copy of the deck we're working with.
 // deck is a reference to the type we want to attach the print function to.
 // In main.go, cards === d
-// (deck deck) represents the arguments for a function
+// (deck deck) represents the return values for a function
 
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
