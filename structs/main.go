@@ -38,8 +38,10 @@ func main() {
 
 	//* get the memory address of the value this variable is pointing at
 	//* i.e. the memory address where the original struct is located, alexPointer is an address
-	alexPointer := &alex
-	alexPointer.updateName("Aless")
+	// alexPointer := &alex
+	// alexPointer.updateName("Aless")
+	//* go allows us to call a function whose receiver type is a pointer with an original struct as shown below
+	alex.updateName("Aless")
 	alex.print()
 
 }
