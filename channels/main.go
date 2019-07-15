@@ -15,18 +15,27 @@ func main() {
 		"http://medium.com",
 	}
 
+	//* create a channel
+	c := make(chan string)
+
 	for _, link := range links {
-		checkLink(link)
+		//* we only use the go keyword in front of function calls
+		go checkLink(link, c)
 	}
+
+	fmt.Println(<-c)
 }
 
-func checkLink(link string) {
+func checkLink(link string, c chan string) {
 	_, err := http.Get(link)
 
 	if err != nil {
 		fmt.Println(link, " might be down")
+		//* send a message into a channel
+		c <- "Might be down I think"
 		return
 	}
 
 	fmt.Println(link, " is up")
+	c <- "Yep, We Up!"
 }
