@@ -23,6 +23,11 @@ func main() {
 		go checkLink(link, c)
 	}
 
+	//* listen for a value in the channel & print
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+	fmt.Println(<-c)
 	fmt.Println(<-c)
 }
 
