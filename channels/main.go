@@ -24,6 +24,9 @@ func main() {
 	}
 
 	//* listen for a value in the channel & print
+	//* receiving messages from a channel is a blocking move
+	//* print according to number of messages sent to channels
+	//* an extra println causes the program to hang
 	fmt.Println(<-c)
 	fmt.Println(<-c)
 	fmt.Println(<-c)
