@@ -24,8 +24,13 @@ func main() {
 	}
 
 	//* setup infinite loop to repeat routines
-	for {
-		go checkLink(<-c, c)
+	// for {
+	// 	go checkLink(<-c, c)
+	// }
+
+	// alt loop => loop over the channels values and pass each value to l
+	for l := range c {
+		go checkLink(l, c)
 	}
 }
 
