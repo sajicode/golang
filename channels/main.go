@@ -23,15 +23,10 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	//* listen for a value in the channel & print
-	//* receiving messages from a channel is a blocking move
-	//* print according to number of messages sent to channels
-	//* an extra println causes the program to hang
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
-	fmt.Println(<-c)
+	//* log channel msgs with a for loop
+	for i := 0; i < len(links); i++ {
+		fmt.Println(<-c)
+	}
 }
 
 func checkLink(link string, c chan string) {
