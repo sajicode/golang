@@ -23,9 +23,9 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	//* log channel msgs with a for loop
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+	//* setup infinite loop to repeat routines
+	for {
+		go checkLink(<-c, c)
 	}
 }
 
@@ -35,10 +35,10 @@ func checkLink(link string, c chan string) {
 	if err != nil {
 		fmt.Println(link, " might be down")
 		//* send a message into a channel
-		c <- "Might be down I think"
+		c <- link
 		return
 	}
 
 	fmt.Println(link, " is up")
-	c <- "Yep, We Up!"
+	c <- link
 }
