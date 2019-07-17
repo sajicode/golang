@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -29,12 +30,24 @@ func main() {
 	// }
 
 	// alt loop => loop over the channels values and pass each value to l
+
+	//* never attempt to access the same variable inside different go routines
+	//* that is why we pass the 'l' value as a parameter into the function literal below
+	//* this gives the child routine access to a reference of the original value
+	//* we only share information between routines (parent to child) by passing the info as a function argument
+
 	for l := range c {
-		go checkLink(l, c)
+		//* place sleep statement inside function literal (IIFE)
+		go func(link string) {
+			//* pause between requests for 5 seconds
+			time.Sleep(5 * time.Second)
+			checkLink(link, c)
+		}(l)
 	}
 }
 
 func checkLink(link string, c chan string) {
+	//* do not put sleep statement here
 	_, err := http.Get(link)
 
 	if err != nil {
