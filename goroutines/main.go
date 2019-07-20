@@ -1,3 +1,6 @@
+//* program to show how scheduler behaves with two logical
+//* processors
+
 package main
 
 import (
@@ -6,51 +9,51 @@ import (
 	"sync"
 )
 
-var wg sync.WaitGroup
-
 func main() {
-	//* Allocate one logical processor for the scheduler to use
-	runtime.GOMAXPROCS(1)
+	//* Allocate two logical processors for the scheduler to use
+	runtime.GOMAXPROCS(2)
 
 	//* wg is used to wait for the program to finish
 	//* Add a count of two, one for each goroutine
+	var wg sync.WaitGroup
 	wg.Add(2) //* for the two goroutines we intend to run
 
-	//* create two goroutines
-	fmt.Println("Create Goroutines")
+	fmt.Println("Start Goroutines")
 
-	go printPrime("A")
-	go printPrime("B")
+	//* Declare an anonymous function and create a goroutine
+	go func() {
+		//* Schedule the call to done to tell the main we are done
+		defer wg.Done() //* decrements the value of WaitGroup by one
 
-	//* wait for the goroutines to finish
+		//* display the alphabet three times
+		for count := 0; count < 3; count++ {
+			for char := 'a'; char < 'a'+26; char++ {
+				fmt.Printf("%c ", char)
+			}
+		}
+	}()
+
+	//* Declare an anonymous function and create a goroutine
+	go func() {
+		//* Schedule the call to done to tell the main we are done
+		defer wg.Done()
+
+		//* display the alphabet three times
+		for count := 0; count < 3; count++ {
+			for char := 'A'; char < 'A'+26; char++ {
+				fmt.Printf("%c ", char)
+			}
+		}
+	}()
+
+	//* wait for both goroutines to finish
 	fmt.Println("Waiting to finish")
 	wg.Wait()
 
-	fmt.Println("Terminating Program")
+	fmt.Println("\nTerminating Program")
+	// fmt.Println(runtime.NumCPU()) //* print number of CPU cores
 }
 
-//* printPrime displays prime numbers for the first 5000 numbers
-func printPrime(prefix string) {
-	//* Schedule the call to Done to tell main we are done
-	defer wg.Done()
-
-next:
-	for outer := 2; outer < 5000; outer++ {
-		for inner := 2; inner < outer; inner++ {
-			if outer%inner == 0 {
-				continue next
-			}
-		}
-		fmt.Printf("%s:%d\n", prefix, outer)
-	}
-	fmt.Println("Completed", prefix)
-}
-
-//* =======================================================
-
-//* the program creates two goroutines that print any prime numbers
-//* between 1 & 5000 that can be found.
-//* This takes a bit of time and so at some point, there is a swap
-//* between goroutine A & B - one gives the other time on the thread
-//* this shows how the scheduler runs goroutiines concurrently
-//* within a logical processor
+//* with two logical processors, the goroutines run in parallel
+//* this can be seen from the way the results are logged
+//* the letters are mixed
