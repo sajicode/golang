@@ -1,6 +1,3 @@
-//* program that creates two goroutines that display the
-//* English alphabet with lower and uppercase letters
-//* in a a concurrent fashion
 package main
 
 import (
@@ -9,61 +6,51 @@ import (
 	"sync"
 )
 
+var wg sync.WaitGroup
+
 func main() {
 	//* Allocate one logical processor for the scheduler to use
 	runtime.GOMAXPROCS(1)
 
 	//* wg is used to wait for the program to finish
 	//* Add a count of two, one for each goroutine
-	var wg sync.WaitGroup
 	wg.Add(2) //* for the two goroutines we intend to run
 
-	fmt.Println("Start Goroutines")
+	//* create two goroutines
+	fmt.Println("Create Goroutines")
 
-	//* Declare an anonymous function and create a goroutine
-	go func() {
-		//* Schedule the call to done to tell the main we are done
-		defer wg.Done() //* decrements the value of WaitGroup by one
+	go printPrime("A")
+	go printPrime("B")
 
-		//* display the alphabet three times
-		for count := 0; count < 3; count++ {
-			for char := 'a'; char < 'a'+26; char++ {
-				fmt.Printf("%c ", char)
-			}
-		}
-	}()
-
-	//* Declare an anonymous function and create a goroutine
-	go func() {
-		//* Schedule the call to done to tell the main we are done
-		defer wg.Done()
-
-		//* display the alphabet three times
-		for count := 0; count < 3; count++ {
-			for char := 'A'; char < 'A'+26; char++ {
-				fmt.Printf("%c ", char)
-			}
-		}
-	}()
-
-	//* wait for both goroutines to finish
+	//* wait for the goroutines to finish
 	fmt.Println("Waiting to finish")
 	wg.Wait()
 
-	fmt.Println("\nTerminating Program")
+	fmt.Println("Terminating Program")
 }
 
-//* A waitGroup is a counting semaphore that can be used to maintain
-//* a record of running goroutines
-//* when the value of a WaitGroup is greater than zero - wg.Add(2) -
-//* the Wait method will block
+//* printPrime displays prime numbers for the first 5000 numbers
+func printPrime(prefix string) {
+	//* Schedule the call to Done to tell main we are done
+	defer wg.Done()
 
-//* if we allocate a value to a WaitGroup greater than the number of
-//* go routines, the application errors out
+next:
+	for outer := 2; outer < 5000; outer++ {
+		for inner := 2; inner < outer; inner++ {
+			if outer%inner == 0 {
+				continue next
+			}
+		}
+		fmt.Printf("%s:%d\n", prefix, outer)
+	}
+	fmt.Println("Completed", prefix)
+}
 
-//* defer is used to schedule other functions from inside the executing
-//* function to be called when the function returns.
+//* =======================================================
 
-//* in our case, we use the 'defer' keyword to guarantee that
-//* the method call to 'Done' is made once each goroutine
-//* is finished with its work
+//* the program creates two goroutines that print any prime numbers
+//* between 1 & 5000 that can be found.
+//* This takes a bit of time and so at some point, there is a swap
+//* between goroutine A & B - one gives the other time on the thread
+//* this shows how the scheduler runs goroutiines concurrently
+//* within a logical processor
