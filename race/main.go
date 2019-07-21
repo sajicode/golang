@@ -1,6 +1,6 @@
 //* Race conditions
-//* The program below demonstrates race conditions
-//! Testing Purposes Only - DO NOT TRY THIS AT WORK!
+//* Using atomic functions to fix race conditions
+//* The sync/atomic package gives us safe access to numeric types
 
 package main
 
@@ -8,11 +8,12 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
+	"sync/atomic"
 )
 
 var (
 	//* counter is a variable incremented by all goroutines
-	counter int
+	counter int64
 
 	//* wg is used to wait for the program to finish
 	wg sync.WaitGroup
@@ -37,30 +38,16 @@ func incCounter(id int) {
 	defer wg.Done()
 
 	for count := 0; count < 2; count++ {
-		//* capture the value of Counter
-		value := counter
+		//* Safely Add One to counter
+		atomic.AddInt64(&counter, 1)
 
-		//* Yield the thread to give the other goroutine a chance
-		//* and be placed back in queue
-		//* this forces the scheduler to swap between two goroutines
-		//* to exaggerate the effects of the race condition
+		//* Yield the thread and be placed back in queue
 		runtime.Gosched()
-
-		//* Increment our local value of counter
-		value++
-
-		//* store the value back into Counter
-		counter = value
 	}
 }
 
-//* In the above program, the counter variable is read & written
-//* to four times, twice by each goroutine, but the value of
-//* the counter variable when the program terminates is 2
-//* This is because each goroutine overrides the work of the other
-//* This happens when the goroutine swap is taking place
-//* Each goroutine makes its own copy of the counter variable and
-//* then is swapped out for the other goroutine
-
-//* we can use go's built in race detector
-//* go build -race & ./race
+//* the AddInt64 function synchronizes the adding of integer values
+//* by enforcing that only one goroutine can perform & complete the
+//* add operation at a time
+//* when goroutines attempt to call any atomic function, they are
+//* automatically synchronized against the variable that's referenced
