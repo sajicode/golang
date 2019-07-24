@@ -3,9 +3,10 @@
 package runner
 
 import (
-	"cmd/go/internal/run"
-	"os/signal"
 	"errors"
+	"os"
+	"os/signal"
+	"time"
 )
 
 //* Runner runs a set of tasks within a given timeout and can be
