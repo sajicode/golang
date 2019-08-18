@@ -13,13 +13,12 @@
   c. Code Coverage
   d. Formatting
 
-## Go Compiles faster than C
+. <b>Go Compiles faster than C.</b>
 
-## Go does not need a runtime to run on the OS unlike Java
+. <b>Go does not need a runtime to run on the OS unlike Java.</b>
 
-## Python and PHP sit behind a web server e.g. Nginx, Apache while Go has an inbuilt server
-
-  . One of the reasons it's useful to put Python & PHP behind a web server has to do with threads & concurrent connections.
+. <b>Python and PHP sit behind a web server e.g. Nginx, Apache while Go has an inbuilt server.</b>
+. One of the reasons it's useful to put Python & PHP behind a web server has to do with threads & concurrent connections.
   . Python has a global interpreter lock that allows only one thread to execute at a time.
   . PHP applications tend to run from start to end in a process.
   . To enable multiple connections to an application concurrently, a web server e.g. Nginx can sit in front of the application
