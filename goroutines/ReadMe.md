@@ -12,4 +12,7 @@
 
   . Channels - A channel is a pipeline for sending and receiving data. It is like a socket <socket.io> that runs inside your program. Channels provide a way for one goroutine to send structured data to another.
 
-  
+5. Goroutines run concurrently, but not necessarily in parallel. When you schedule a goroutine to run by calling <go func>, you're asking the Go runtime to execute that function for you as soon as it can, but that's not likely.
+
+6. Although calling the Go scheduler may guarantee that the scheduler has a chance to check for other goroutines, we shouldn't rely on it as a tool for ensuring that other goroutines have a chance to complete.<br/>
+
