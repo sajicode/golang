@@ -1,7 +1,13 @@
 //* word counter with race condition
 package main
 
-
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+	"sync"
+)
 
 func main() {
 	var wg sync.WaitGroup
@@ -35,7 +41,7 @@ type words struct {
 
 //* create a new word instance
 func newWords() *words {
-	return &words(found: map[string]int{})
+	return &words{found: map[string]int{}}
 }
 
 //* Tracks the number of times we have seen a word
