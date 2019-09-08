@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -9,13 +10,11 @@ import (
 func main() {
 	//* get the array of cmd line values
 	args := os.Args[1:]
-	result, err := Concat(args...)
-
-	if err != nil {
-		println(err)
-		return
+	if result, err := Concat(args...); err != nil {
+		fmt.Printf("Error: %s\n", err)
+	} else {
+		fmt.Printf("Concatenated string: '%s'\n", result)
 	}
-	println(result)
 }
 
 //* Concat returns a string and an error
