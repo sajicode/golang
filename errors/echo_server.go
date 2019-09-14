@@ -4,6 +4,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"net"
 )
@@ -47,8 +48,12 @@ func handle(conn net.Conn) {
 
 //* writes the data back out to the socket, echoing it to the client; then closes the connection
 func response(data []byte, conn net.Conn) {
-	defer func() {
-		conn.Close()
-	}()
-	conn.Write(data)
+	// defer func() {
+	// 	conn.Close()
+	// }()
+	// conn.Write(data)
+	//* simulate a panic
+	panic(errors.New("failure in response"))
+	//* This panic causes the server to crash. This is something we definitely do not want to happen.
+	//* One failed request shouldn't crash our servers.
 }
