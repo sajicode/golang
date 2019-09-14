@@ -34,6 +34,13 @@ func listen() {
 }
 
 func handle(conn net.Conn) {
+	//* The deferred function handles the panic and makes sure that in all cases the connection is closed
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Fatal error: %s", err)
+		}
+		conn.Close()
+	}()
 	//* tries to read a line of data from the connection
 	reader := bufio.NewReader(conn)
 	data, err := reader.ReadBytes('\n')
@@ -51,9 +58,9 @@ func response(data []byte, conn net.Conn) {
 	// defer func() {
 	// 	conn.Close()
 	// }()
-	// conn.Write(data)
+	conn.Write(data)
 	//* simulate a panic
-	panic(errors.New("failure in response"))
-	//* This panic causes the server to crash. This is something we definitely do not want to happen.
-	//* One failed request shouldn't crash our servers.
+	panic(errors.New("Pretend I'm a real error\n"))
 }
+
+//* now, the server doesn't crash because we have handled possible errors in the <handle> function, no pun intended :-)
