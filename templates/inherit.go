@@ -10,7 +10,7 @@ var t map[string]*template.Template
 
 func init() {
 	//* set up the template map
-	t := make(map[string]*template.Template)
+	t = make(map[string]*template.Template)
 	//* load templates along with base into the map
 	temp := template.Must(template.ParseFiles("base.html", "user.html"))
 	t["user.html"] = temp
