@@ -1,0 +1,10 @@
+<!-- define a title template -->
+{{define "title"}}User: {{.Username}}{{end}}
+<!-- define a content template -->
+{{define "content"}}
+<ul>
+  <li>Username: {{.Username}}</li>
+  <li>Name: {{.Name}}</li>
+</ul>
+{{end}}
+<!-- title and content sections need to be defined because they're required -->

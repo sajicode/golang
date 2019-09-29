@@ -1,0 +1,17 @@
+<!-- Inheriting with optional section -->
+{{define "title"}}{{Title}}{{end}}
+{{define "content"}}
+<p>
+  {{.Content}}
+</p>
+{{end}}
+<!-- define a template to fill in the optional section of the parent -->
+{{define "styles"}}
+<style>
+  h1 {
+    color: #800080
+  }
+</style>
+{{end}}
+
+<!-- the styles template defined here overrides the default supplied in base.html -->
