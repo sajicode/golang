@@ -45,9 +45,37 @@ func main() {
 	}
 	fmt.Println(f)
 
-	//* accessing data
-	//* strings
-	m := f.(map[string]interface{})
-	fmt.Println(m["firstName"], m["lastName"], m["age"])
+	printJSON(f)
 
+	// //* accessing data
+	// //* strings
+	// m := f.(map[string]interface{})
+	// fmt.Println(m["firstName"], m["lastName"], m["age"])
+
+}
+
+//* print contents of json
+func printJSON(v interface{}) {
+	switch vv := v.(type) {
+	//* for each type of data from the JSON, display the info about the type and value.
+	//* on objects & arrays from the json, recursively call printJSON to display the properties inside them
+	case string:
+		fmt.Println("is string", vv)
+	case float64:
+		fmt.Println("is float64", vv)
+	case []interface{}:
+		fmt.Println("is an array")
+		for i, u := range vv {
+			fmt.Print(i, " ")
+			printJSON(u)
+		}
+	case map[string]interface{}:
+		fmt.Println("is an object:")
+		for i, u := range vv {
+			fmt.Print(i, " ")
+			printJSON(u)
+		}
+	default:
+		fmt.Println("Unknown type")
+	}
 }
