@@ -2,3 +2,5 @@ my_cards
 .vscode
 exampledata
 log.txt
+cert.pem
+key.pem
