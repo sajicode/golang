@@ -1,0 +1,20 @@
+{
+	"id": 1,
+	"content": "This is us!",
+	"author": {
+		"id": 2,
+		"name": "Jack Pearson"
+	},
+	"comments": [
+		{
+			"id": 3,
+			"content": "Great movie!",
+			"author": "Kate Pearson"
+		},
+		{
+			"id": 4,
+			"content": "Wonderful!",
+			"author": "Randall Pearson"
+		}
+	]
+}
